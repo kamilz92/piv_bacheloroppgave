@@ -34,7 +34,21 @@ mkdir images
 ```
 Husk å bare bruke en linje om gangen. "images" er mappen vi skal legge inn bildene som skal behandles av eventuelle algoritmer.
 
+Nå skla vi oprette en json fil som inneholder lokasjonen til bildene i "images" mappen, det er også denne filen som skla kalles når man åpner EATS. Denne filen skla ligge i mappen "eats", den skal hete ```wsi-mount-points.json```, og den skal se slik ut:
+```
+{
+    "{din filsti til eats mappen}/eats/images": "/data"
+}
+```
+Med min filsti vil den dermed se slik ut:
+```
+{
+    "/mnt/c/Users/sande/OneDrive/Desktop/Fag/BachelorDAT191/code/eats/images": "/data"
+}
+```
 
+Nå er vi egentlig klare til å kjøre EATS.
 
+###Fortsettelse følger
 
 
