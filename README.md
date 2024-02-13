@@ -17,5 +17,24 @@ Om man får feilmelding må man først kjøre ```sudo apt-get update``` og prøv
 
 Nå er det på tide å laste ned EATS, dette kan gjøres ved bruk av: ```pip install empaia-app-test-suite``` La dette gjøre seg ferdig, kan ta litt tid.
 
+Når det er lastet ned må man bevege seg til et passende sted i filsystemet på maskinen, og oprette en mappe. Her kan man bruke kommandoen cd for å bevege seg inn i en mappe. Vær obs på at filstier ser annerledes ut i linux enn i windows, så hos meg ble dette:
+```
+cd /mnt/c/Users/sande/OneDrive/Desktop/Fag/BachelorDAT191/code
+```
+istedenfor:
+```
+cd C:\Users\sande\OneDrive\Desktop\Fag\BachelorDAT191\code
+```
+
+Når man er i en passende mappe må man oprette en ny mappe ("eats") og bevege seg inn i denne før man opretter enda en mappe ("images"). Dette gjøres slik:
+```
+mkdir eats
+cd eats
+mkdir images
+```
+Husk å bare bruke en linje om gangen. "images" er mappen vi skal legge inn bildene som skal behandles av eventuelle algoritmer.
+
+
+
 
 
