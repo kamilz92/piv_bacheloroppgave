@@ -7,8 +7,15 @@ Om ubuntu ikke allerede er lastet ned, gå til  microsoft store for å laste ned
 Deretter gå til terminalen på datamaskinen og skriv "ubuntu", dette åpner Windows Subsystem for Linux (WSL) hvor EATS må kjøres gjennom. Første gangen dette åpnes må det opprettes brukernavn og passord.
 
 Her pleier Python allerede å være lastet ned, om ikke må den lastes ned ved bruk av:
-```sudo apt-get install python3.10```
-Dette er den nyeste versjonen av python i denne versjonen av Ubuntu
+```sudo apt-get install python3.10```.
+Dette er den nyeste versjonen av python i denne versjonen av Ubuntu.
 
-deretter må "pip" lastes ned, dette gjørs ved å kjøre:
+Deretter må "pip" lastes ned, dette gjørs ved å kjøre:
 ```sudo apt install python3-pip```
+
+Om man får feilmelding må man først kjøre ```sudo apt-get update``` og prøve igjen.
+
+Nå er det på tide å laste ned EATS, dette kan gjøres ved bruk av: ```pip install empaia-app-test-suite``` La dette gjøre seg ferdig, kan ta litt tid.
+
+
+
