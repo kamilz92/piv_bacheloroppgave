@@ -114,7 +114,6 @@ eats slides register slide1.json
 ```
 Her må filnavnet endres utifra hva navnet på .json filen er
 
-Når man først har lagt inn bildet i EATS trenger man ikke å ta vare på denne .json filen, da kan man endten slette den eller bruke samme fil for å legge inn flere bilder ved å endre navn, ```<navn-på-bilde>``` og ```<id>```. Det er veldig enkelt å Åpne filen med foretrukken IDE og endre denne for å legge inn et nytt bilde. Om man ønsker å slette alle bilder og apper når man lukker EATS kan man også ta vare på filen til neste gang.
 
 
 
