@@ -1,6 +1,6 @@
 # piv_bacheloroppgave
 
-## Hvordan man skal sette oppp EMPAIA Test Suite (EATS)
+## Hvordan man skal sette oppp EMPAIA Test Suite (EATS) for første gang
 Om ubuntu ikke allerede er lastet ned, gå til  microsoft store for å laste ned denne
 ![image](https://github.com/kamilz92/piv_bacheloroppgave/assets/148437004/2a99bf37-533d-4c77-b5f7-0b72637da29b)
 
@@ -21,7 +21,7 @@ Når det er lastet ned må man bevege seg til et passende sted i filsystemet på
 ```
 cd /mnt/c/Users/sande/OneDrive/Desktop/Fag/BachelorDAT191/code
 ```
-istedenfor:
+Istedenfor:
 ```
 cd C:\Users\sande\OneDrive\Desktop\Fag\BachelorDAT191\code
 ```
@@ -49,6 +49,23 @@ Med min filsti vil den dermed se slik ut:
 
 Nå er vi egentlig klare til å kjøre EATS.
 
-###Fortsettelse følger
+Før man fortsetter er det viktig å ha lastet ned docker desktop via linken: ```https://www.docker.com/products/docker-desktop/```, eller annen valgfri versjon.
+
+Deretter må man være sikker på at den har blitt godkjent for bruk i WSL(Windows Subsystem for Linux), dette kan man gjøre i selve innstillingene i docker desktop, slik(i vist rekkefølge):
+
+![image](https://github.com/kamilz92/piv_bacheloroppgave/assets/148437004/d04f5291-c264-47f4-8094-bfd303becb3e)
+
+
+Når man er sikker på at docker desktop kjører og at alt er i orden kan man starte EATS, dette gjøres ved bruk av:
+```
+eats services up ./wsi-mount-points.json
+```
+pass på at du fremdeles ligger i "eats" mappen på datamaskinen.
+
+Dette kan ta litt lang tid første gang ettersom at det er en del docker containere som skal lastes ned.
+
+når denne har kjørt seg ferdig, kan man åpne EATS i nettleser ved hjelp av følgende URL
+[http://localhost:8888/wbc3/](http://localhost:8888/wbc3/)http://localhost:8888/wbc3/
+
 
 
