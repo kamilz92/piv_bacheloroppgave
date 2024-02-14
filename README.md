@@ -40,7 +40,7 @@ mkdir images
 ```
 Husk å bare bruke en linje om gangen. "images" er mappen vi skal legge inn bildene som skal behandles av eventuelle algoritmer.
 
-Nå skla vi oprette en json fil som inneholder lokasjonen til bildene i "images" mappen, det er også denne filen som skla kalles når man åpner EATS. Denne filen skla ligge i mappen "eats", den skal hete ```wsi-mount-points.json```, og den skal se slik ut:
+Nå skla vi oprette en json fil som inneholder lokasjonen til bildene i "images" mappen, det er også denne filen som skal kalles når man åpner EATS. Denne filen skla ligge i mappen "eats", den skal hete ```wsi-mount-points.json```, og den skal se slik ut:
 ```
 {
     "{din filsti til eats mappen}/eats/images": "/data"
@@ -52,6 +52,12 @@ Med min filsti vil den dermed se slik ut:
     "/mnt/c/Users/sande/OneDrive/Desktop/Fag/BachelorDAT191/code/eats/images": "/data"
 }
 ```
+
+Om man vil slippe å laste opp et notat til en .json converter på nett for å oprette filen, er det enkleste å gå inn i et prosjekt i en valgfri IDE og oprette en ny fil, og gi denne riktig navn. Legg inn det jeg viste ovenfor, IDE-en vil automatisk formatere dette riktig som en .json fil. Deretter kan man bruke ```ctrl + x``` for å klippe denne ut, og lime den inn direkte gjennom filutforskeren ![image](https://github.com/kamilz92/piv_bacheloroppgave/assets/148437004/8b47a2b8-8950-4d3d-b6f0-8ecb02ee61c7)
+ på din datamaskin:
+![image](https://github.com/kamilz92/piv_bacheloroppgave/assets/148437004/7134b1cf-3fb3-4a2e-9fd7-1169b4fe817c)
+![image](https://github.com/kamilz92/piv_bacheloroppgave/assets/148437004/bf52be6f-b27c-46d1-bf96-370279f6367c)
+
 
 
 ## Steg 3: kjøring av EATS
@@ -80,6 +86,9 @@ Nå skal EATS kjøre som det skal.
 
 ## Steg 4: Legge bilder inn i EATS portalen
 Selv om man har laget "image" mappen og til og med lagt inn noen WSI-bilder, må man gjøre noen steg for at disse skal dukke opp i EATS
+
+Først pass på at de har lagt noen WSI-bilder i mappen "images" som ble opprettet tidligere, deretter må vi oprette enda en ```.json``` fil
+Denne kan hete hva man vil, men om man har et bilde ```slide1.png``` vil det være passende å kalle den ```slide1.json```
 
 
 ## Steg ?: Lukke EATS på forkjellige måter
