@@ -59,7 +59,7 @@ Om man vil slippe å laste opp et notat til en .json converter på nett for å o
 
 ![image](https://github.com/kamilz92/piv_bacheloroppgave/assets/148437004/bf52be6f-b27c-46d1-bf96-370279f6367c)
 
-Deretter kan man bruke ```ctrl + x``` for å klippe denne ut, og lime den inn direkte gjennom filutforskeren ![image](https://github.com/kamilz92/piv_bacheloroppgave/assets/148437004/8b47a2b8-8950-4d3d-b6f0-8ecb02ee61c7)
+Deretter kan man bruke ```ctrl + x``` for å klippe denne ut, og lime den inn direkte inn i "eats" mappen gjennom filutforskeren ![image](https://github.com/kamilz92/piv_bacheloroppgave/assets/148437004/8b47a2b8-8950-4d3d-b6f0-8ecb02ee61c7)
  på din datamaskin:
 
 ## Steg 3: kjøring av EATS
@@ -90,7 +90,32 @@ Nå skal EATS kjøre som det skal.
 Selv om man har laget "image" mappen og til og med lagt inn noen WSI-bilder, må man gjøre noen steg for at disse skal dukke opp i EATS
 
 Først pass på at de har lagt noen WSI-bilder i mappen "images" som ble opprettet tidligere, deretter må vi oprette enda en ```.json``` fil
-Denne kan hete hva man vil, men om man har et bilde ```slide1.png``` vil det være passende å kalle den ```slide1.json```
+Denne kan hete hva man vil, men om man har et bilde ```slide1.png``` vil det være passende å kalle den ```slide1.json```.
+
+Denne kan oprettes på samme måte som tidligere, og skal også ligge i "eats" mappen
+
+Filen skal se slik ut:
+```
+{
+    "type": "wsi",
+    "path": "/data/<navn-på-bilde>",
+    "id": "<id>"
+}
+```
+Her skal ```<navn-på-bilde>``` være navnet på bildet i "image" mappen, feks. ```slide1.png```
+Og ```<id>``` skal være en tilfeldig UUID, et eksempel på dette ser slik ut: ```0ceb2040-3d63-4968-9603-80dd89822608```
+En slik UUID kan enkelt genereres i terminalen ved hjelp av komandoen ```uuidgen```
+
+![image](https://github.com/kamilz92/piv_bacheloroppgave/assets/148437004/7b2ad257-1fb1-4ef2-bc4e-cce05fdeb59c)
+
+Når denne filen er oprettet og lagt i "eats" mappen, så er det klart og man kan kjøre:
+```
+eats slides register slide1.json
+```
+Her må filnavnet endres utifra hva navnet på .json filen er
+
+Når man først har lagt inn bildet i EATS trenger man ikke å ta vare på denne .json filen, da kan man endten slette den eller bruke samme fil for å legge inn flere bilder ved å endre navn, ```<navn-på-bilde>``` og ```<id>```. Det er veldig enkelt å Åpne filen med foretrukken IDE og endre denne for å legge inn et nytt bilde. Om man ønsker å slette alle bilder og apper når man lukker EATS kan man også ta vare på filen til neste gang.
+
 
 
 ## Steg ?: Lukke EATS på forkjellige måter
