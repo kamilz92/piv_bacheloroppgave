@@ -1,6 +1,6 @@
 # piv_bacheloroppgave
 
-# Hvordan man skal sette oppp EMPAIA Test Suite (EATS) for første gang
+# Hvordan man skal sette opp EMPAIA Test Suite (EATS) for første gang
 
 Hopp mellom steg ved hjelp av ![image](https://github.com/kamilz92/piv_bacheloroppgave/assets/148437004/88afce22-8e84-4f27-98f1-0b0b2ade61e6) ikonet oppe i høyre hjørne
 
