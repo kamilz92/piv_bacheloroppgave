@@ -65,7 +65,7 @@ pass på at du fremdeles ligger i "eats" mappen på datamaskinen.
 Dette kan ta litt lang tid første gang ettersom at det er en del docker containere som skal lastes ned.
 
 når denne har kjørt seg ferdig, kan man åpne EATS i nettleser ved hjelp av følgende URL
-[http://localhost:8888/wbc3/](http://localhost:8888/wbc3/)http://localhost:8888/wbc3/
+[http://localhost:8888/wbc3/](http://localhost:8888/wbc3/)
 
 
 
