@@ -53,12 +53,14 @@ Med min filsti vil den dermed se slik ut:
 }
 ```
 
-Om man vil slippe å laste opp et notat til en .json converter på nett for å oprette filen, er det enkleste å gå inn i et prosjekt i en valgfri IDE og oprette en ny fil, og gi denne riktig navn. Legg inn det jeg viste ovenfor, IDE-en vil automatisk formatere dette riktig som en .json fil. Deretter kan man bruke ```ctrl + x``` for å klippe denne ut, og lime den inn direkte gjennom filutforskeren ![image](https://github.com/kamilz92/piv_bacheloroppgave/assets/148437004/8b47a2b8-8950-4d3d-b6f0-8ecb02ee61c7)
- på din datamaskin:
+Om man vil slippe å laste opp et notat til en .json converter på nett for å oprette filen, er det enkleste å gå inn i et prosjekt i en valgfri IDE og oprette en ny fil, og gi denne riktig navn. Legg inn det jeg viste ovenfor, IDE-en vil automatisk formatere dette riktig som en .json fil: 
+ 
 ![image](https://github.com/kamilz92/piv_bacheloroppgave/assets/148437004/7134b1cf-3fb3-4a2e-9fd7-1169b4fe817c)
+
 ![image](https://github.com/kamilz92/piv_bacheloroppgave/assets/148437004/bf52be6f-b27c-46d1-bf96-370279f6367c)
 
-
+Deretter kan man bruke ```ctrl + x``` for å klippe denne ut, og lime den inn direkte gjennom filutforskeren ![image](https://github.com/kamilz92/piv_bacheloroppgave/assets/148437004/8b47a2b8-8950-4d3d-b6f0-8ecb02ee61c7)
+ på din datamaskin:
 
 ## Steg 3: kjøring av EATS
 Nå er vi egentlig klare til å kjøre EATS.
