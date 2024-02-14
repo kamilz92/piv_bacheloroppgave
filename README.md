@@ -2,7 +2,7 @@
 
 # Hvordan man skal sette oppp EMPAIA Test Suite (EATS) for første gang
 
-##Steg 1: Laste ned det man trenger
+## Steg 1: Laste ned det man trenger
 Om ubuntu ikke allerede er lastet ned, gå til  microsoft store for å laste ned denne
 ![image](https://github.com/kamilz92/piv_bacheloroppgave/assets/148437004/2a99bf37-533d-4c77-b5f7-0b72637da29b)
 
@@ -17,7 +17,7 @@ Deretter må "pip" lastes ned, dette gjørs ved å kjøre:
 
 Om man får feilmelding må man først kjøre ```sudo apt-get update``` og prøve igjen.
 
-##Steg 2: klarkjøring til bruk av EATS
+## Steg 2: klarkjøring til bruk av EATS
 Nå er det på tide å laste ned EATS, dette kan gjøres ved bruk av: ```pip install empaia-app-test-suite``` La dette gjøre seg ferdig, kan ta litt tid.
 
 Når det er lastet ned må man bevege seg til et passende sted i filsystemet på maskinen, og oprette en mappe. Her kan man bruke kommandoen cd for å bevege seg inn i en mappe. Vær obs på at filstier ser annerledes ut i linux enn i windows, så hos meg ble dette:
@@ -51,7 +51,7 @@ Med min filsti vil den dermed se slik ut:
 ```
 
 
-##Steg 3: kjøring av EATS
+## Steg 3: kjøring av EATS
 Nå er vi egentlig klare til å kjøre EATS.
 
 Før man fortsetter er det viktig å ha lastet ned docker desktop via linken: ```https://www.docker.com/products/docker-desktop/```, eller annen valgfri versjon.
@@ -75,11 +75,11 @@ når denne har kjørt seg ferdig, kan man åpne EATS i nettleser ved hjelp av f�
 Nå skal EATS kjøre som det skal.
 
 
-##Steg 4: Legge bilder inn i EATS portalen
+## Steg 4: Legge bilder inn i EATS portalen
 Selv om man har laget "image" mappen og til og med lagt inn noen WSI-bilder, må man gjøre noen steg for at disse skal dukke opp i EATS
 
 
-##Steg ?: Lukke EATS på forkjellige måter
+## Steg ?: Lukke EATS på forkjellige måter
 Om man har gjort seg ferdig og har lyst til å avslutte kjøringen av EATS er det 2 måter å gjøre dette på:
 For å lukke det uten å slette det som ligger bak:
 ```
