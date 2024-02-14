@@ -2,6 +2,9 @@
 
 # Hvordan man skal sette oppp EMPAIA Test Suite (EATS) for første gang
 
+Hopp mellom steg ved hjelp av ![image](https://github.com/kamilz92/piv_bacheloroppgave/assets/148437004/88afce22-8e84-4f27-98f1-0b0b2ade61e6) ikonet oppe i høyre hjørne
+
+
 ## Steg 1: Laste ned det man trenger
 Om ubuntu ikke allerede er lastet ned, gå til  microsoft store for å laste ned denne
 ![image](https://github.com/kamilz92/piv_bacheloroppgave/assets/148437004/2a99bf37-533d-4c77-b5f7-0b72637da29b)
