@@ -115,7 +115,104 @@ eats slides register slide1.json
 Her må filnavnet endres utifra hva navnet på .json filen er
 
 
+## Steg 5: legge inn apper i portalen
 
+Her bruker jeg til å begynne med et eksempel program fra EMPAIA sin egen tutorial, fra denne linken:
+[https://gitlab.com/empaia/integration/sample-apps/-/tree/master/sample_apps/tutorial](https://gitlab.com/empaia/integration/sample-apps/-/tree/master/sample_apps/tutorial)
+
+Jeg fikk det til å fungere med eksempel TA05
+
+Først må denne dockeriseres, dette kan gjøres endten i IDE eller direkte i terminal, men synes det er lettere i IDE ettersom at det er greit å ha tilgang til alle .json filene man skal bruke. Da må man først bevege seg inn i v3 filen og deretter dockerisere programmet, slik:
+
+```
+cd v3
+```
+```
+docker build -t ta05 .
+```
+
+Når dette er gjort er det på tide å flytte på alt vi trenger til en ny "input" mappe man lager i "eats" mappen. 
+Først av alt er det vært å legge mere til ```ead.json``` filen som ligger i programmet, denne må kopieres og limes inn i "eats" mappen på din datamaskin.
+Deretter må man kopiere den ```slide1.json``` man brukte tidligere inn i inputs mappen og gi den samme navn som er navngitt i ```ead.json``` filen. I dette tilfellet skal den hete ```my_wsi.json```:
+![image](https://github.com/kamilz92/piv_bacheloroppgave/assets/148437004/7ff09c05-cbf3-48ef-9dab-8ce9c138f4bb)
+
+Deretter må man kopiere både ```my_rectangles.json``` og ```rois.json``` inn i samme "inputs" mappe. Før vi går videre må vi endre litt på ```my_rectangles.json```, vi må endre på "reference_id"-ene slik at de matcher id'en til ```my_wsi.json```(foreløpig er "reference_id" lik id'en til tilsvarende wsi i eksempel programmet, men denne kan ikke vi bruke), for å gjøre dette er det enkleste bare å åpne begge to i en IDE og bare kopiere over id'en fra ```my_wsi.json``` til ```my_rectangles.json```. "reference_id" blir brukt 3 ganger i denne filen, og må derfor byttes ut for alle 3.
+
+```rois.json``` har også en "reference_id" men denne refererer til id'en til ```my_rectangles.json``` så denne kan vi bare la være slik den er.
+
+### Da var vi klar for legge programmet inn i EATS:
+
+Først kan vi begynne slik:
+
+```
+eats apps register ead.json ta05 > app.env
+```
+dette gjør at vi får en .env fil som inneholder viktig innformasjon som APP_ID, denne kan vi gjøre om til en variabel som kan brukes senere, slik:
+
+```
+export $(xargs < app.env)
+```
+Vi kan deretter se verdien til variabelen APP_ID slik:
+```
+echo $APP_ID
+```
+og vi kan liste ut alle appene som er registrert:
+```
+eats apps list
+```
+Nå kan vi registrere dette som en jobb, her må vi referere til "inputs" mappen vår slik:
+```
+eats jobs register $APP_ID ./inputs > job.env
+```
+Her får vi også en slik .env fil, og igjen kan vi får ut viktige variabler slik:
+```
+export $(xargs < job.env)
+```
+Den vi skal bruke mest er EMPAIA_JOB_ID som vi kan se her:
+```
+echo $EMPAIA_JOB_ID
+```
+Vi kan også se alle lagrede variabler ved å bare skrive:
+```
+export
+```
+Nå kan vi endelig kjøre programmet, dette gjøres ved hjelp av:
+```
+eats jobs run ./job.env
+```
+Den skal nå kjøre, hvis man får feilmeldinger pleier det endten å være fordi man mangler en fil i "inputs" mappen, eller at man har en feil i "reference_id", men dette står ganske tydelig om dette skjer. Vi kan nå skjekke statusen til denne jobben ved å bruke EMPAIA_JOB_ID, slik:
+```
+eats jobs status $EMPAIA_JOB_ID 
+```
+Resultatene kan være en av følgende: SCHEDULED, RUNNING eller COMPLETED, hvis den viser error se hvordan dette kan debugges her: [https://developer.empaia.org/app_developer_docs/v3/#/eats/advanced?id=debugging](https://developer.empaia.org/app_developer_docs/v3/#/eats/advanced?id=debugging)
+Hvis man skjekker status før jobben har begynt å kjøre vil man få opp: ASSEMBLY
+
+### Venting
+Før man kan laste ned resultatet må jobben være ferdig, men for å slippe å skjekke status manuelt hele tiden hvis prosessen tar litt lengre tid, kan man bruke:
+```
+eats jobs wait $EMPAIA_JOB_ID
+```
+Da skjekker programmet automatisk og gir beskjed om den er ferdig. da kan den returnere en av følgende:
+![image](https://github.com/kamilz92/piv_bacheloroppgave/assets/148437004/79fac11f-6db8-41e0-9b45-5aa9f6183381)
+
+### Se og laste ned resultat
+For å raskt se resultat i terminal, kan man bruke:
+```
+eats jobs inspect $EMPAIA_JOB_ID
+```
+for å laste ned .json fil til ny mappe, kan man bruke:
+```
+eats jobs export $EMPAIA_JOB_ID ./job-outputs
+```
+
+### Hvordan se resultat i nettleser
+se linken nedenfor for bilder av dette:
+[https://developer.empaia.org/app_developer_docs/v3/#/eats/running_apps?id=results-workbench-client](https://developer.empaia.org/app_developer_docs/v3/#/eats/running_apps?id=results-workbench-client)
+
+
+### mer info
+Mer detaljert informasjon om dette kan finnes her:
+[https://developer.empaia.org/app_developer_docs/v3/#/eats/running_apps](https://developer.empaia.org/app_developer_docs/v3/#/eats/running_apps)
 
 ## Steg ?: Lukke EATS på forkjellige måter
 Om man har gjort seg ferdig og har lyst til å avslutte kjøringen av EATS er det 2 måter å gjøre dette på:
