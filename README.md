@@ -335,7 +335,7 @@ put_finalize()
 
 Det er mye ekstra som må legges inn for å kunne hente verdier og bilder via EMPAIA hvor i dette tilfellet bare my_function metoden inneholder hva man ønsker å gjøre med dette bildet.
 
-Må også si ifra om at i dette tilfellet så bruker jeg ikke en rois.json fil. Men her er tilhørende ```ead```, ```my_rectangle``` og ```my_wsi``` fil. Vær obs på at my rectangles skal ligge i ```inputs``` mappen og ```ead``` skal ligge direkte i ```eats``` mappen
+Må også si ifra om at i dette tilfellet så bruker jeg ikke en rois.json fil. Men her er tilhørende ```ead```, ```my_rectangle``` og ```my_wsi``` fil. Vær obs på at ```my_rectangle``` og ```my_wsi``` skal ligge i ```inputs``` mappen og ```ead``` skal ligge direkte i ```eats``` mappen.
 
 ### ead.json
 ```
