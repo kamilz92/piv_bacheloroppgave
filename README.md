@@ -214,6 +214,196 @@ se linken nedenfor for bilder av dette:
 Mer detaljert informasjon om dette kan finnes her:
 [https://developer.empaia.org/app_developer_docs/v3/#/eats/running_apps](https://developer.empaia.org/app_developer_docs/v3/#/eats/running_apps)
 
+## Steg 6: Lage egne programmer som fungerer i EATS
+For å lage egne programmer som fungerer med my_rectangle er det en del steg man må gjennom, resulterende kode ser slik ut:
+
+### Glue code
+```
+import os
+import requests
+import numpy as np
+from PIL import Image
+from io import BytesIO
+
+
+APP_URL = "http://host.docker.internal:8888/app-api"
+JOB_ID = os.environ.get('EMPAIA_JOB_ID')
+TOKEN = os.environ.get('EMPAIA_TOKEN')
+HEADER = {"Authorization": f"Bearer {TOKEN}"}
+
+print(TOKEN)
+print(HEADER)
+
+# Retrieve meta-data
+input_url = f"{APP_URL}/v3/{JOB_ID}/inputs/my_wsi"
+print(input_url)
+
+r = requests.get(input_url, headers=HEADER)
+r.raise_for_status()
+wsi_meta = r.json()
+wsi_id = wsi_meta['id']
+
+# Download tile (7,1) at level 2
+tile_url = f"{APP_URL}/v3/{JOB_ID}/tiles/{wsi_id}/level/2/position/7/1"
+r = requests.get(tile_url, headers=HEADER)
+r.raise_for_status()
+i = Image.open(BytesIO(r.content))
+a = np.array(i)
+print(a.shape)
+print("Hello World")
+
+
+# Do something cool with your multi-dimensional array of pixel-color values, like put it in a Neural Network or so...
+
+
+def put_finalize():
+    """
+    finalize job, such that no more data can be added and to inform EMPAIA infrastructure about job state
+    """
+    url = f"{APP_URL}/v3/{JOB_ID}/finalize"
+    f = requests.put(url, headers=HEADER)
+    f.raise_for_status()
+
+
+def get_input(key: str):
+    """
+    get input data by key as defined in EAD
+    """
+    url = f"{APP_URL}/v3/{JOB_ID}/inputs/{key}"
+    f = requests.get(url, headers=HEADER)
+    f.raise_for_status()
+    return f.json()
+
+
+def get_wsi_tile(my_wsi2: dict, my_rectangle2: dict):
+    """
+    get a WSI tile on level 0
+
+    Parameters:
+        my_wsi2: contains WSI id (and meta data)
+        my_rectangle2: tile position on level 0
+    """
+    x, y = my_rectangle2["upper_left"]
+    width = my_rectangle2["width"]
+    height = my_rectangle2["height"]
+
+    wsi_id2 = my_wsi2["id"]
+    level = 0
+
+    tile_url2 = f"{APP_URL}/v3/{JOB_ID}/regions/{wsi_id2}/level/{level}/start/{x}/{y}/size/{width}/{height}"
+    f = requests.get(tile_url2, headers=HEADER)
+    f.raise_for_status()
+
+    return Image.open(BytesIO(f.content))
+
+
+def post_output(key: str, data: dict):
+    """
+    post output data by key as defined in EAD
+    """
+    url = f"{APP_URL}/v3/{JOB_ID}/outputs/{key}"
+    f = requests.post(url, json=data, headers=HEADER)
+    f.raise_for_status()
+    return f.json()
+
+
+def my_function(wsi_tile2: Image):
+    """
+    Din ønskede kode må skrives i denne metoden i dette eksempelet
+    """
+    return 42
+
+
+my_wsi = get_input("my_wsi")
+my_rectangle = get_input("my_rectangle")
+
+wsi_tile = get_wsi_tile(my_wsi, my_rectangle)
+
+my_quantification_result = {
+    "name": "fibrosis score",  # choose name freely
+    "type": "float",
+    "value": my_function(wsi_tile),
+    "creator_type": "job",  # NEW required in v3 apps
+    "creator_id": JOB_ID,  # NEW required in v3 apps
+}
+
+
+post_output("my_quantification_result", my_quantification_result)
+
+put_finalize()
+```
+
+Det er mye ekstra som må legges inn for å kunne hente verdier og bilder via EMPAIA hvor i dette tilfellet bare my_function metoden inneholder hva man ønsker å gjøre med dette bildet.
+
+Må også si ifra om at i dette tilfellet så bruker jeg ikke en rois.json fil. Men her er tilhørende ```ead```, ```my_rectangle``` og ```my_wsi``` fil. Vær obs på at my rectangles skal ligge i ```inputs``` mappen og ```ead``` skal ligge direkte i ```eats``` mappen
+
+### ead.json
+```
+{
+    "$schema": "https://gitlab.com/empaia/integration/definitions/-/raw/main/ead/ead-schema.v3.json",
+    "name": "My Cool Medical AI Algorithm",
+    "name_short": "Cool App",
+    "namespace": "org.empaia.helse_vest_piv.cool_app.v3.1",
+    "description": "Does super advanced AI stuff, you know...",
+    "io": {
+        "my_wsi": {
+            "type": "wsi"
+        },
+        "my_rectangle": {
+            "type": "rectangle",
+            "reference": "io.my_wsi"
+        },
+        "my_quantification_result": {
+            "type": "float"
+        }
+    },
+    "modes": {
+        "standalone": {
+            "inputs": [
+                "my_wsi",
+                "my_rectangle"
+            ],
+            "outputs": [
+                "my_quantification_result"
+            ]
+        }
+    }
+}
+```
+
+
+### my_rectangle.json
+```
+{
+    "name": "my_rectangle",
+    "type": "rectangle",
+    "upper_left": [
+        1000,
+        2000
+    ],
+    "width": 300,
+    "height": 500,
+    "reference_id": "b104a16c-a239-49be-aec1-e9e94966484d",
+    "reference_type": "wsi",
+    "npp_created": 499,
+    "npp_viewing": [
+        1,
+        499123
+    ]
+}
+```
+
+### my_wsi.json
+```
+{
+    "type": "wsi",
+    "path": "/data/Sirius1.svs",
+    "id": "b104a16c-a239-49be-aec1-e9e94966484d"
+}
+```
+
+
+
 ## Steg ?: Lukke EATS på forkjellige måter
 Om man har gjort seg ferdig og har lyst til å avslutte kjøringen av EATS er det 2 måter å gjøre dette på:
 For å lukke det uten å slette det som ligger bak:
