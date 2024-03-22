@@ -402,6 +402,8 @@ Må også si ifra om at i dette tilfellet så bruker jeg ikke en rois.json fil. 
 }
 ```
 
+Vær oppmerksom på at spessielt glue koden må endres på om man for eksempel ønsker å iterere gjennom tiles. Denne koden fungerer bare ved å spesifisere en rektangel på forhånd.
+
 
 
 ## Steg ?: Lukke EATS på forkjellige måter
