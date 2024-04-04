@@ -1,0 +1,35 @@
+{
+    "$schema": "https://gitlab.com/empaia/integration/definitions/-/raw/main/ead/ead-schema.v3.json",
+    "name": "My Cool Medical AI Algorithm",
+    "name_short": "Cool App",
+    "namespace": "org.empaia.helse_vest_piv.cool_app.v3.1",
+    "description": "Does super advanced AI stuff, you know...",
+    "io": {
+        "my_wsi": {
+            "type": "wsi"
+        },
+        "my_rectangle": {
+            "type": "rectangle",
+            "reference": "io.my_wsi"
+        },
+        "my_quantification_result": {
+            "type": "float"
+        },
+        "fibrosis_score": {
+            "type": "float",
+            "reference": "io.my_rectangle"
+        }
+    },
+    "modes": {
+        "standalone": {
+            "inputs": [
+                "my_wsi",
+                "my_rectangle"
+            ],
+            "outputs": [
+                "my_quantification_result",
+                "fibrosis_score"
+            ]
+        }
+    }
+}
