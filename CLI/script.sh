@@ -139,20 +139,20 @@ add_picture(){
 }
 
 # create EADS FUNCTION
-create_eads_manually(){
-        echo '{
+create_ead_manually() {
+    echo '{
         "$schema": "https://gitlab.com/empaia/integration/definitions/-/raw/main/ead/ead-schema.v3.json",
-        "name": "My Cool Medical AI Algorithm",
-        "name_short": "Cool App",
-        "namespace": "org.empaia.helse_vest_piv.cool_app.v3.1",
-        "description": "Does super advanced AI stuff, you know...",
+        "name": "TODO: Enter the name of the app",
+        "name_short": "TODO: Enter a short name for the app",
+        "namespace": "TODO: Enter the namespace for the app",
+        "description": "TODO: Enter a description of the app",
         "io": {
             "my_wsi": {
                 "type": "wsi"
             },
             "my_quantification_result": {
                 "type": "float",
-                "description": "Human readable text, e.g. super important metric",
+                "description": "TODO: Enter a description of the output",
                 "reference": "io.my_wsi"
             }
         },
@@ -167,9 +167,10 @@ create_eads_manually(){
             }
         }
     }' > ead.json
+    code ead.json
 }
 #TODO
-create_eads_from_file(){
+create_ead_from_file(){
         echo '{
         "$schema": "https://gitlab.com/empaia/integration/definitions/-/raw/main/ead/ead-schema.v3.json",
         "name": "My Cool Medical AI Algorithm",
@@ -206,13 +207,38 @@ add_app(){
     # Ask user if he has all the files needed
     read -r -p "Do you have all the files needed? (eads.json etc.) (yes/no): " answer
     if [[ $answer == "no" ]]; then
-        # ask user if he wants to create eads.json manually or form json file
-        # TODO
+        # asks user if he wants to create eads.json manually or form json file
+        read -r p "How do you want to create eads.json? ([m]anually/[f]rom json file): " answer
+        if [[ $answer == "m" ]]; then
+        # det kommer
+            create_ead_manually
+        elif [[ $answer == "f" ]]; then
+        #det kommer
+            create_ead_from_file
+        else
+            echo "Invalid option $REPLY"
+            return 1
+        fi
+    elif [[ $answer == "yes" ]]; then
+        echo "Continuing..."
+    else
+        echo "Invalid option $REPLY"
+        return 1
     fi
-    # docker logic TODO
 
+    read -r -p "Enter folder name for the app: " folder
+    read -r -p "Please enter APP name: " name
+    cd $folder
+    docker build -t "$name" .
+    cd ..
 
-    read -r -p "Please enter APP name: " navn
+    #docker logic TODO
+    read -r -p "Was the docker build successful? (yes/no): " answer
+    if [[ $answer == "no" ]]; then
+        echo "Exiting..."
+        return 1
+    fi
+
     eats apps register ead.json "$navn" > app.env
     export $(xargs < app.env)
     eats jobs register $APP_ID ./inputs > job.env
@@ -235,7 +261,7 @@ exit_cli(){
 
 # This function shuts down the EMPAIA service and exits the script.
 exit_close(){
-    eats services down
+    eats services down -v
     exit_cli
 }
 
