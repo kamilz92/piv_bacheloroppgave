@@ -4,7 +4,7 @@ import os
 import subprocess
 import uuid
 
-
+EATS_TEMPLATE_GIT_URL = "https://github.com/kamilz92/eats.git"
 config_file = 'config.json'
 
 with open(config_file, 'r') as f:
@@ -42,6 +42,14 @@ def check_docker():
         print("Opening Docker Desktop application; this can take a while")
         subprocess.run(["powershell.exe", "-Command", f"Start-Process '{docker_desktop_path}'"])
 
+def create_wsi_mount_points():
+    if not os.path.isfile('wsi-mount-points.json'):
+        if click.confirm('"wsi-mount-points.json" not found. Would you like to create it?'):
+            with open('wsi-mount-points.json', 'w') as f:
+                json.dump({f"{empaia_path}/images": "/data"}, f, indent=4)
+    else:
+        return
+
 
 @cli.command(help="Starts EMPAIA.")
 def start_empaia():
@@ -61,15 +69,10 @@ def start_empaia():
     if not os.path.isdir('images'):
         os.mkdir('images')
 
-    if not os.path.isfile('wsi-mount-points.json'):
-        if click.confirm('"wsi-mount-points.json" not found. Would you like to create it?'):
-            with open('wsi-mount-points.json', 'w') as f:
-                json.dump({f"{empaia_path}/images": "/data"}, f, indent=4)
-        else:
-            return
+    create_wsi_mount_points()
 
     res = subprocess.run(["eats", "services", "up", "./wsi-mount-points.json"])
-    #error handling|
+    #error handling
     if res.returncode != 0:
         print("Error starting EMPAIA.")
     else:
@@ -80,9 +83,9 @@ def start_empaia():
 def close_empaia():
     subprocess.run(["eats", "services", "down", "-v"])
 
-@cli.command(help="Adds a picture.")
+@cli.command(help="Adds a image.")
 @click.argument('img', default="")
-def add_picture(img):
+def add_image(img):
     os.chdir(empaia_path)
 
     # check if images folder exists
@@ -140,12 +143,34 @@ def add_app(app_name):
         print("App not folder not found.")
         return
 
-#TODO
+
 @cli.command(help="Build a project.")
-@click.argument('project_name', default="")
-def build_project(project_name):
-    if project_name == "":
-        project_name = input("Provide folder name for the project: ")
+@click.option("-i", is_flag=True, help="Initialize series of question to fill in eads.json")
+def build_project(i):
+    os.chdir(empaia_path)
+    
+    if os.path.isdir('eats'):
+        print("Eats already exists.")
+        return
+    
+    try: 
+        subprocess.run(["git", "clone", EATS_TEMPLATE_GIT_URL], check=True)
+    except subprocess.CalledProcessError:
+        print("Error cloning repository.")
+        return
+    
+    os.chdir('eats')
+    subprocess.run(["rm", "-rf", ".git"])
+    subprocess.run(["mkdir", "images"])
+
+    create_wsi_mount_points()
+    
+    if i:
+        print("TODO")
+        print("A bunch of questions will be asked to fill in the eats.json file.")
+        #TODO
+
+
 
 
 if __name__ == '__main__':
