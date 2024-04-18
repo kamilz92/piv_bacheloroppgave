@@ -145,8 +145,9 @@ def add_app(app_name):
 
 
 @cli.command(help="Build a project.")
+@click.argument('project_name', default="")
 @click.option("-i", is_flag=True, help="Initialize series of question to fill in eads.json")
-def build_project(i):
+def build_project(i, project_name):
     os.chdir(empaia_path)
     
     if os.path.isdir('eats'):
@@ -164,12 +165,19 @@ def build_project(i):
     subprocess.run(["mkdir", "images"])
 
     create_wsi_mount_points()
-    
+    #i
+    if project_name != "":
+        subprocess.run(["mv", "App", f"{project_name}"])
     if i:
-        print("TODO")
-        print("A bunch of questions will be asked to fill in the eats.json file.")
-        #TODO
-
+        print("Please fill in the following information to create a project. (press enter to skip)")
+        
+        name = input("Project name: ")
+        update_json('ead.json', 'name', name)
+        #TODO: add more fields
+        
+    else:
+        return
+    
 
 
 
