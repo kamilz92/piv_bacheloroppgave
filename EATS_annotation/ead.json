@@ -28,26 +28,31 @@
             "type": "float",
             "reference": "io.my_rectangle"
         },
-        "my_pixels": {
+        "detected_pixels": {
             "type": "collection",
+            "reference": "io.my_rectangle",
             "items": {
-                "type": "collection",
-                "reference": "io.my_rectangle",
-                "items": {
-                    "type": "point",
-                    "reference": "io.my_wsi"
-                }
+                "type": "point",
+                "reference": "io.my_wsi"
             }
         },
-        "my_pixel_classes": {
+        "model_confidences": {
             "type": "collection",
             "items": {
-                "type": "collection",
-                "items": {
-                    "type": "class",
-                    "reference": "io.my_pixels.items.items"
-                }
+                "type": "float",
+                "reference": "io.detected_pixels.items"
             }
+        },
+        "pixel_classifications": {
+            "type": "collection",
+            "items": {
+                "type": "class",
+                "reference": "io.detected_pixels.items"
+            }
+        },
+        "number_of_red_pixels": {
+            "type": "integer",
+            "reference": "io.my_rectangle"
         }
     },
     "modes": {
@@ -59,8 +64,10 @@
             "outputs": [
                 "my_quantification_result",
                 "fibrosis_score",
-                "my_pixels",
-                "my_pixel_classes"
+                "detected_pixels",
+                "model_confidences",
+                "pixel_classifications",
+                "number_of_red_pixels"
             ]
         }
     }
