@@ -1,0 +1,17 @@
+{
+    "name": "my_rectangle",
+    "type": "rectangle",
+    "upper_left": [
+        9500,
+        16000
+    ],
+    "width": 2000,
+    "height": 3000,
+    "reference_id": "b104a16c-a239-49be-aec1-e9e94966484d",
+    "reference_type": "wsi",
+    "npp_created": 499,
+    "npp_viewing": [
+        1,
+        499123
+    ]
+}
