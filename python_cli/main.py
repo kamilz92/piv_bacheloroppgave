@@ -10,7 +10,7 @@ config_file = 'config.json'
 with open(config_file, 'r') as f:
         data = json.load(f)
         docker_desktop_path = data.get('DOCKER_DESKTOP_PATH')
-        empaia_path = data.get('EMPAIA_PATH')
+        eats_path = data.get('EATS_PATH')
 
 @click.group()
 def cli():
@@ -46,25 +46,35 @@ def create_wsi_mount_points():
     if not os.path.isfile('wsi-mount-points.json'):
         if click.confirm('"wsi-mount-points.json" not found. Would you like to create it?'):
             with open('wsi-mount-points.json', 'w') as f:
-                json.dump({f"{empaia_path}/images": "/data"}, f, indent=4)
+                json.dump({f"{eats_path}/images": "/data"}, f, indent=4)
     else:
         return
+
+def generate_eats_json(app_name):
+    eats_data = {
+        "name": app_name,
+        "type": "app",
+        "path": f"/data/{app_name}",
+        "id": str(uuid.uuid4())
+    }
+    with open('ead.json', 'w') as f:
+        json.dump(eats_data, f, indent=4)
 
 
 @cli.command(help="Starts EMPAIA.")
 def start_empaia():
-    global empaia_path, docker_desktop_path, config_file
+    global eats_path, docker_desktop_path, config_file
 
     config_file = 'config.json'
     if not os.path.isfile(config_file):
         with open(config_file, 'w') as f:
-            json.dump({"DOCKER_DESKTOP_PATH": "", "EMPAIA_PATH": ""}, f, indent=4)
+            json.dump({"DOCKER_DESKTOP_PATH": "", "EATS_PATH": ""}, f, indent=4)
 
-    if not empaia_path:
-        empaia_path = click.prompt('Please enter the path to EMPAIA')
-        update_json(config_file, "EMPAIA_PATH", empaia_path)
+    if not eats_path:
+        eats_path = click.prompt('Please enter the path to EMPAIA')
+        update_json(config_file, "EATS_PATH", eats_path)
 
-    os.chdir(empaia_path)
+    os.chdir(eats_path)
 
     if not os.path.isdir('images'):
         os.mkdir('images')
@@ -86,7 +96,7 @@ def close_empaia():
 @cli.command(help="Adds a image.")
 @click.argument('img', default="")
 def add_image(img):
-    os.chdir(empaia_path)
+    os.chdir(eats_path)
 
     # check if images folder exists
     if not os.path.isdir('images'):
@@ -131,24 +141,50 @@ def add_image(img):
     else:
         print("Image added successfully.")
 
-#TODO
+
 @cli.command(help="Adds an app.")
 @click.argument('app_name', default="")
-def add_app(app_name):
+@click.argument('app_folder', default="")
+def add_app(app_name, app_folder):
     if app_name == "":
-        app_name = input("Provide folder name for the app: ")
+        app_name = input("Please enter the name of the app: ")
+    config_file = 'config.json'
+    if not os.path.isfile(config_file):
+        with open(config_file, 'w') as f:
+            json.dump({"DOCKER_DESKTOP_PATH": "", "EATS_PATH": ""}, f, indent=4)
 
-    os.chdir(empaia_path)
-    if not os.path.isdir(app_name):
-        print("App not folder not found.")
+    if not eats_path:
+        eats_path = click.prompt('Please enter the path to EMPAIA')
+        update_json(config_file, "EATS_PATH", eats_path)
+
+    if not os.path.isfile('eats.json'):
+        print("eats.json not found.")
+        generate_eats_json(app_name)
+        
+    if app_folder == "":
+        app_folder = input("Please enter the path to the app folder: ")
+    
+    os.chdir(app_folder)
+    docker_build_result = subprocess.run(["docker", "build", "-t", app_name, "."])
+    if docker_build_result.returncode != 0:
+        print("Docker build failed. Exiting...")
         return
+    os.chdir("..")
+    
+    subprocess.run(["eats", "apps", "register", "ead.json", name], stdout=open('app.env', 'w'))
+    subprocess.run(["export", "$(xargs < app.env)"])
+    subprocess.run(["eats", "jobs", "register", os.getenv("APP_ID"), "./inputs"], stdout=open('job.env', 'w'))
+    subprocess.run(["export", "$(xargs < job.env)"])
+    subprocess.run(["eats", "jobs", "run", "./job.env"])
+    subprocess.run(["eats", "jobs", "wait", os.getenv("EMPAIA_JOB_ID")])
+    subprocess.run(["eats", "jobs", "status", os.getenv("EMPAIA_JOB_ID")])
 
 
 @cli.command(help="Build a project.")
 @click.argument('project_name', default="")
 @click.option("-i", is_flag=True, help="Initialize series of question to fill in eads.json")
 def build_project(i, project_name):
-    os.chdir(empaia_path)
+    os.chdir(eats_path)
     
     if os.path.isdir('eats'):
         print("Eats already exists.")
